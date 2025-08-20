@@ -12,6 +12,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.esfe.Asistencia.Modelos.Docente;
 import com.esfe.Asistencia.Servicios.Interfaces.IDocenteService;
+import com.esfe.Asistencia.Utilidades.PdfGeneratorService;
+
+import jakarta.servlet.http.HttpServletResponse;
 
 @Controller
 @RequestMapping("/docentes")
@@ -19,6 +22,8 @@ public class DocenteController {
 
     @Autowired
     private IDocenteService docenteService;
+    @Autowired
+    private PdfGeneratorService pdfGeneratorService;
 
     @GetMapping
     public String index(Model model,
@@ -107,5 +112,30 @@ public class DocenteController {
         docenteService.eliminarPorId(docente.getId());
         redirect.addFlashAttribute("msg", "Docente eliminado correctamente");
         return "redirect:/docentes";
+    }
+
+
+    @GetMapping("/docentePDF")
+    public void generarPdf(Model model,HttpServletResponse response) throws Exception {
+
+        //Datos en lista para mostrar en el pdf
+        List<Docente>  docentes = docenteService.obtenerTodos();
+
+        //Preparar datos para thymeleaf
+        Map<String, Object> data = new HashMap<>();
+        data.put("docentes",docentes);
+
+        //Generar el pdf con el nombre de la vista o plantilla de thymeleaf
+        byte[] pdfBytes = pdfGeneratorService.generatePdfReport("docente/RPDocente", data);
+
+        //Configurar la respuesta http para descargar o mostrar el pdf
+        response.setContentType("application/pdf");
+        response.setHeader("Content-Disposition", "inline; filename=docentes.pdf");
+        response.setContentLength(pdfBytes.length);
+
+        // escribir bytes en el output stream
+        response.getOutputStream().write(pdfBytes);
+        response.getOutputStream().flush();
+
     }
 }
