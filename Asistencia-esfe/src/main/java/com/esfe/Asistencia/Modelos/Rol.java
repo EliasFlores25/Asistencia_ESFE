@@ -7,22 +7,22 @@ import jakarta.validation.constraints.*;
 public class Rol {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer Id;
+    private Integer id;
 
     @NotBlank(message = "El nombre de rol es requerido")
-    private String Nombre;
+    private String nombre;
 
     public Integer getId(){
-        return Id;
+        return id;
     }
-    public void setId(Integer pId){
-        Id = pId;
+    public void setId(Integer id){
+        this.id = id;
     }
     public String getNombre(){
-        return Nombre;
+        return nombre;
     }
-    public void setNombre(String Nombre){
-        this.Nombre = Nombre;
+    public void setNombre(String nombre){
+        this.nombre = nombre;
     }
 
 }

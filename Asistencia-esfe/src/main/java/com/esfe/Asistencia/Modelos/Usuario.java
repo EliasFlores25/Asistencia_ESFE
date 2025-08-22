@@ -18,42 +18,46 @@ import java.util.*;
 public class Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer Id;
+    private Integer id;
 
     @NotBlank(message = "El nombre es requirido")
-    private String Login;
+    private String login;
 
     @NotBlank(message = "La Contraseña es requirida")
-    private String Clave;
+    private String clave;
 
-    private int Status;
+    private int status;
+
+        public Integer getId(){
+        return id;
+    }
 
     public void setId(Integer id) {
-        Id = id;
+        this.id = id;
     }
 
     public String getLogin() {
-        return Login;
+        return login;
     }
 
     public void setLogin(String login) {
-        Login = login;
+        this.login = login;
     }
 
     public String getClave() {
-        return Clave;
+        return clave;
     }
 
     public void setClave(String clave) {
-        Clave = clave;
+        this.clave = clave;
     }
 
     public int getStatus() {
-        return Status;
+        return status;
     }
 
     public void setStatus(int status) {
-        Status = status;
+        this.status = status;
     }
 
     public List<Rol> getRoles() {
@@ -68,11 +72,8 @@ public class Usuario {
     @JoinTable(name = "usuario_rol",
     joinColumns = @JoinColumn(name = "usuario_id"),
     inverseJoinColumns = @JoinColumn(name = "rol_id"))
+    
     private List<Rol> Roles;
-
-    public Integer getId(){
-        return Id;
-    }
 
      // Método para agregar roles
     public void agregar(Rol tempRol) {
